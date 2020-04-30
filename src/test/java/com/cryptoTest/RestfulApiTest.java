@@ -1,9 +1,13 @@
 package com.cryptoTest;
 
+import static org.junit.Assert.assertEquals;
+
 import org.junit.*;
 
 import io.restassured.RestAssured;
+import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
+import io.restassured.response.ResponseBody;
 import io.restassured.specification.RequestSpecification;
 
 import static io.restassured.RestAssured.*;
@@ -20,7 +24,7 @@ public class RestfulApiTest {
 		RequestSpecification httpRequest = RestAssured.given();
 		Response response = httpRequest.get("");
 		int statusCode = response.getStatusCode();
-		Assert.assertEquals(statusCode,  200);
+		assertEquals(statusCode,  200);
 	}
 
 	
@@ -30,6 +34,19 @@ public class RestfulApiTest {
 		RequestSpecification httpRequest = RestAssured.given();
 		Response response = httpRequest.get("/bitcoin");
 		int statusCode = response.getStatusCode();
-		Assert.assertEquals(statusCode,  200);
+		assertEquals(statusCode,  200);
 	}
+	
+	@Test
+	public void that_response_requested_bitcoin_returns_id_OK() {
+		RestAssured.baseURI = "http://localhost:1111";
+		RequestSpecification httpRequest = RestAssured.given();
+		Response response = httpRequest.get("/bitcoin");
+		JsonPath jsonPathEvaluator = response.jsonPath();
+		String id  = jsonPathEvaluator.getString("id");
+		assertEquals("bitcoin", id);
+	}
+
+	
+	
 }
