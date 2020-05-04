@@ -23,7 +23,12 @@ public class RestfulApiTest {
 	public void that_bitcoin_request_validate_statusCode_returnOK() {
 		given().get("bitcoin").then().statusCode(200);
 	}
-
+	
+	@Test
+	public void handle_incorrect_status_code() {
+		given().get("invalid").then().statusCode(400);
+	}
+	
 	@Test
 	public void that_bitcoin_id_return_bitcoin() {
 		given().get("bitcoin").then().body("id", equalTo("bitcoin"));
